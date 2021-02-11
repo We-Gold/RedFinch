@@ -1,2 +1,4 @@
-export { Agent } from './agents/Agent.js';
-export { EvolvingAgent } from './agents/EvolvingAgent.js';
+export { NetworkAgent } from './agents/NetworkAgent.js';
+export { EvolvingNetworkAgent } from './agents/EvolvingNetworkAgent.js';
+export { SimpleAgent } from './agents/SimpleAgent.js';
+export { EvolvingSimpleAgent } from './agents/EvolvingSimpleAgent.js';

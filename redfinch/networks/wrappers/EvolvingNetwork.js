@@ -5,6 +5,10 @@ class EvolvingNetwork extends VanillaNetwork {
         super(config);
     }
 
+    /**
+     * Flattens the network into a 1d array.
+     * @return {Array}      The flattened network.
+     */
     flatten() {
         let flattenedNetwork = [];
 
@@ -21,6 +25,11 @@ class EvolvingNetwork extends VanillaNetwork {
         return flattenedNetwork;
     }
 
+    /**
+     * Sets the weights and biases in the network to those in the given flattened network.
+     * @param  {Array} flattenedNetwork The flattened network
+     * @return {EvolvingNetwork}      Returns itself for chaining.
+     */
     setFlattened(flattenedNetwork) {
         let flattenedNetwork = [...flattenedNetwork];
 

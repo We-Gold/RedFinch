@@ -39,16 +39,24 @@ class VanillaNetwork {
         return this;
     }
 
-    getOutputs() {
-        const outputs = this.layers[this.layers.length - 1];
+    outputLayer() {
+        const outputLayer = this.layers[this.layers.length - 1];
 
-        if(outputs.length < 1) throw "Cannot get outputs from empty output layer.";
+        if(outputLayer.size) throw "The output layer is empty.";
 
-        return outputs;
+        return outputLayer;
     }
 
-    getGreatestOutput() {
-        const outputs = this.getOutputs();
+    inputLayer() {
+        const inputLayer = this.layers[this.layers.length - 1];
+
+        if(inputLayer.size) throw "The input layer is empty.";
+
+        return inputLayer;
+    }
+
+    getOutputIndex() {
+        const outputs = this.outputLayer().values;
 
         let max = {value: outputs[0], index: 0};
 
@@ -123,6 +131,10 @@ class Layer {
         });
 
         layer.values = layer.activation(layer.values);
+    }
+
+    get size() {
+        return this.nodes.length;
     }
 }
 

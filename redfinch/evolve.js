@@ -3,25 +3,39 @@ import { Cross } from './evolve/Cross.js';
 import { Mutate } from './evolve/Mutate.js';
 
 class Evolve {
-    mutateAgent(agent, parameters) {
+    /**
+     * Generates a mutated form of the given agent.
+     * @param  {Agent} agent The given agent
+     * @return {Array}      The result of mutating the agent, returned in one-dimensional form.
+     */
+    getMutationOfAgent(agent) {
         if(agent == null) throw "Agent is null";
 
-        agent.network.setFlattened(agent.mutate(parameters));
+        return agent.mutate();
     }
 
-    mutateAgents(agents, parameters) {
-        if(parameters == null) throw "Parameters are null";
-
-        agents.forEach((agent) => agent.mutate(parameters));
+    getMutationsOfAgents(agents) {
+        return agents.map((agent) => getMutationOfAgent(agent));
     }
 
-    cross(agent1, agent2, parameters) {
+    /**
+     * Cross the given agents.
+     * @param  {Agent} agent1 The first parent agent
+     * @param  {Agent} agent2 The second parent agent
+     * @return {Array}      The result of crossing the agents, returned in one-dimensional form.
+     */
+    cross(agent1, agent2) {
         if(agent1 == null) throw "Agent 1 is null";
         if(agent2 == null) throw "Agent 2 is null";
         
-        return agent1.cross(agent2, parameters);
+        return agent1.cross(agent2);
     }
 
+    /**
+     * Normalizes the fitness scores of the given agents.
+     * @param  {Array} agents The given agents
+     * @param  {Function} algorithm Optional; The normalization algorithm
+     */
     normalizeFitnessScore(agents, algorithm=Normalize.default) {
         if(algorithm == null || algorithm==undefined) throw "Invalid algorithm";
 

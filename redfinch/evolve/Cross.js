@@ -3,15 +3,18 @@ class Cross {
         if(agent1 == null) throw "Agent 1 is null";
         if(agent2 == null) throw "Agent 2 is null";
 
-        let childFlatNetwork = [];
+        let child = [];
 
-        const agent2FlattenedNetwork = agent2.network.flatten();
+        const agent1Flattened = agent1.getFlattened();
+        const agent2Flattened = agent2.getFlattened();
 
-        agent1.network.flatten().forEach((gene, index) => {
-            if(Math.random() < 0.5) childFlatNetwork.push(gene);
-            else childFlatNetwork.push(agent2FlattenedNetwork[index]);
+        if(agent1Flattened.length != agent2Flattened.length) throw "The sizes of the flattened forms of the given agents do not match."
+
+        agent1Flattened.forEach((gene, index) => {
+            if(Math.random() < 0.5) child.push(gene);
+            else child.push(agent2Flattened[index]);
         });
 
-        return childFlatNetwork;
+        return child;
     }
 }
