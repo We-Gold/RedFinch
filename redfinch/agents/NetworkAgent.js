@@ -3,7 +3,7 @@ class NetworkAgent {
         this.network = network;
     }
 
-    get network() {
+    getNetwork() {
         return this.network;
     }
 
@@ -12,8 +12,8 @@ class NetworkAgent {
      * @param  {Array} inputs The inputs to the network
      * @return {any}      The output of the network.
      */
-    getPrediction(inputs) {
-        return this.feedForward(inputs).getNetworkOutput();
+    predict(inputs) {
+        return this.feedForward(inputs).getOutputIndex();
     }
 
     /**
@@ -22,9 +22,9 @@ class NetworkAgent {
      * @return {NetworkAgent}      Returns itself for chaining.
      */
     feedForward(inputs) {
-        if(inputs == null) throw "Inputs are null";
+        if(inputs == null) throw "Error: Inputs are null";
 
-        this.network.setInputLayer(inputs).feedForward();
+        this.network.setInputs(inputs).feedForward();
 
         return this;
     }
@@ -37,7 +37,7 @@ class NetworkAgent {
     getNetworkOutput(outputOptions) {
         const outputIndex = this.getOutputIndex();
 
-        if(outputOptions.length <= outputIndex) throw "The output is out of the bounds of the given options.";
+        if(outputOptions.length <= outputIndex) throw "Error: The output is out of the bounds of the given options.";
 
         return outputOptions[outputIndex];
     }

@@ -1,0 +1,22 @@
+{
+  "name": "redfinch",
+  "version": "1.0.0",
+  "description": "An open and functional library for neuro-evolution and reinforcement learning!",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/We-Gold/RedFinch.git"
+  },
+  "author": "Weaver Goldman",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/We-Gold/RedFinch/issues"
+  },
+  "homepage": "https://github.com/We-Gold/RedFinch#readme",
+  "dependencies": {
+    "@tensorflow/tfjs": "^3.0.0"
+  }
+}

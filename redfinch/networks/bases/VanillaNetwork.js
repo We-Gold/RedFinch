@@ -1,11 +1,11 @@
 class VanillaNetwork {
     constructor(config) {
         /* 
-        config: {
+        config: [
             {nodes: 3}, // Input layer
-            {nodes: 10, activation: Activation.relu} // Hidden layer
-            {nodes: 4, activation: Activation.softmax} // Output layer
-        }
+            {nodes: 10, activation: activation.relu} // Hidden layer
+            {nodes: 4, activation: activation.softmax} // Output layer
+        ]
         */
 
         this.config = config;
@@ -18,22 +18,22 @@ class VanillaNetwork {
 
         // Connect all of the layers together.
         for(let layer = 0; layer < this.layers.length - 1; layer++) {
-            this.layers[i].connect(this.layers[i + 1]);
+            this.layers[layer].connect(this.layers[layer + 1]);
         }
     }
 
     setInputs(inputs) {
-        if(this.layers.length < 1) throw "Cannot feed inputs to empty model.";
-        if(this.layers[0].values.length != inputs.length) throw "The number of inputs does not match the size of the input layer.";
+        if(this.layers.length < 1) throw "Error: Cannot feed inputs to empty model.";
+        if(this.layers[0].getValues().length != inputs.length) throw "Error: The number of inputs does not match the size of the input layer.";
 
-        this.layers[0].values = inputs;
+        this.layers[0].setValues(inputs);
 
         return this;
     }
 
     feedForward() {
         for(let layer = 0; layer < this.layers.length - 1; layer++) {
-            this.layers[i].feedForward(this.layers[i + 1]);
+            this.layers[layer].feedForward(this.layers[layer + 1]);
         }
 
         return this;
@@ -42,21 +42,21 @@ class VanillaNetwork {
     outputLayer() {
         const outputLayer = this.layers[this.layers.length - 1];
 
-        if(outputLayer.size) throw "The output layer is empty.";
+        if(outputLayer.size() < 1) throw "Error: The output layer is empty.";
 
         return outputLayer;
     }
 
     inputLayer() {
-        const inputLayer = this.layers[this.layers.length - 1];
+        const inputLayer = this.layers[0];
 
-        if(inputLayer.size) throw "The input layer is empty.";
+        if(inputLayer.size() < 1) throw "Error: The input layer is empty.";
 
         return inputLayer;
     }
 
     getOutputIndex() {
-        const outputs = this.outputLayer().values;
+        const outputs = this.outputLayer().getValues();
 
         let max = {value: outputs[0], index: 0};
 
@@ -82,6 +82,14 @@ class Layer {
         this.bias = !isOutputLayer ? new Node() : undefined;
     }
 
+    getBias() {
+        return this.bias;
+    }
+
+    getNodes() {
+        return [...this.nodes];
+    }
+
     connect(layer) {
         const nodesInNextLayer = layer.nodes.length;
 
@@ -96,44 +104,44 @@ class Layer {
         return !this.isOutputLayer;
     }
 
-    get values() {
+    getValues() {
         // Return the values of all the nodes in this layer as a list.
-        return this.nodes.map((node) => node.value);
+        return this.nodes.map((node) => node.getValue());
     }
 
-    set values(values) {
-        if(values.length != this.nodes.length) throw "The number of values and the number of nodes do not match."
+    setValues(values) {
+        if(values.length != this.nodes.length) throw "Error: The number of values and the number of nodes do not match."
 
         this.nodes.forEach((node, index) => {
-            node.value = values[index];
+            node.setValue(values[index]);
         });
     }
 
     setAllNodesToValue(value) {
-        this.nodes.forEach((node) => node.value = value);
+        this.nodes.forEach((node) => node.setValue(value));
 
         return this;
     }
 
     feedForward(layer) {
-        if(!this.hasBias()) throw "Cannot feed forward from the output layer.";
+        if(!this.hasBias()) throw "Error: Cannot feed forward from the output layer.";
 
-        layer.setAllNodeValues(0);
+        layer.setAllNodesToValue(0);
 
         for(let node of this.nodes) {
             layer.nodes.forEach((foreignNode, index) => {
-                foreignNode.value += node.value * node.weights[index];
+                foreignNode.setValue(foreignNode.getValue() + node.getValue() * node.getWeights()[index]);
             });
         }
 
         layer.nodes.forEach((foreignNode, index) => {
-            foreignNode.value += this.bias.weights[index];
+            foreignNode.value += this.bias.getWeights()[index];
         });
 
-        layer.values = layer.activation(layer.values);
+        layer.setValues(layer.activation(layer.getValues()));
     }
 
-    get size() {
+    size() {
         return this.nodes.length;
     }
 }
@@ -144,14 +152,22 @@ class Node {
         this.weights = [];
     }
 
-    get weights() {
+    setValue(value) {
+        this.value = value;
+    }
+
+    getValue() {
+        return this.value;
+    }
+
+    getWeights() {
         return [...this.weights];
     }
 
-    set weights(weights) {
-        if(weights.length != this.weights.length) throw "The number of new weights and current weights do not match."
+    setWeights(weights) {
+        if(weights.length != this.weights.length) throw "Error: The number of new weights and current weights do not match."
 
-        this.weigths = [...weights];
+        this.weights = [...weights];
 
         return this;
     }

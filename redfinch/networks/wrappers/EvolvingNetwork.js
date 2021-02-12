@@ -12,14 +12,16 @@ class EvolvingNetwork extends VanillaNetwork {
     flatten() {
         let flattenedNetwork = [];
 
-        const layers = this.network.layers.slice(0, this.network.layers.length - 1);
+        // Get all the layers except for the output layer.
+        const layers = this.layers.slice(0, this.layers.length - 1);
 
+        // Add the weights of all the nodes in the network to an array.
         layers.forEach((layer) => {
-            layer.forEach((node) => {
-                flattenedNetwork = [...flattenedNetwork, node.weights];
+            layer.getNodes().forEach((node) => {
+                flattenedNetwork = [...flattenedNetwork, ...node.getWeights()];
             });
             
-            flattenedNetwork = [...flattenedNetwork, layer.bias.weights];
+            flattenedNetwork = [...flattenedNetwork, ...layer.getBias().getWeights()];
         });
 
         return flattenedNetwork;
@@ -31,16 +33,19 @@ class EvolvingNetwork extends VanillaNetwork {
      * @return {EvolvingNetwork}      Returns itself for chaining.
      */
     setFlattened(flattenedNetwork) {
-        let flattenedNetwork = [...flattenedNetwork];
+        let _flattenedNetwork = [...flattenedNetwork];
 
-        const layers = this.network.layers.slice(0, this.network.layers.length - 1);
+        // Get all the layers except for the output layer.
+        const layers = this.layers.slice(0, this.layers.length - 1);
 
+        // Set the weights of all of the nodes to those given in the flattened network.
         layers.forEach((layer) => {
-            layer.forEach((node) => {
-                node.weights = flattenedNetwork.splice(0,node.weights.length);
+            layer.getNodes().forEach((node) => {
+                const newWeights = _flattenedNetwork.splice(0,node.getWeights().length);
+                node.setWeights(newWeights);
             });
             
-            layer.bias.weights = flattenedNetwork.splice(0,layer.bias.weights.length);
+            layer.getBias().setWeights(_flattenedNetwork.splice(0,layer.getBias().getWeights().length));
         });
 
         return this;

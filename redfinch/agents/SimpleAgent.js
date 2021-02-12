@@ -3,14 +3,14 @@ class SimpleAgent {
         this.genes = genes;
     }
 
-    get genes() {
-        return this.getFlattened();
+    getGenes() {
+        return [...this.genes];
     }
 
     setGenes(genes) {
         if(genes == null || genes == undefined) throw "Invalid genes";
 
-        this.genes = genes;
+        this.genes = [...genes];
 
         return this;
     }
