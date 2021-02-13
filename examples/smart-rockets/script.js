@@ -1,6 +1,3 @@
-// import * as rf from '../../dist/redfinch.js';
-// import {createRocket, generateRandomGenes} from './rocket.js'
-
 const popSize = 100;
 const geneLength = 25;
 const frameRate = 20;

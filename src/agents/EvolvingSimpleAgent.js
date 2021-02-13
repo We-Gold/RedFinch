@@ -2,7 +2,7 @@ import { SimpleAgent } from './SimpleAgent.js';
 import { cross, mutate } from '../export_evolve.js';
 
 class EvolvingSimpleAgent extends SimpleAgent {
-    constructor(genes, fitness) {
+    constructor(genes, fitness={score:0, normalized:0}) {
         super(genes);
 
         /*

@@ -1,10 +1,6 @@
-// import * as rf from '../../dist/redfinch.js';
-
-// console.log(rf.agents);
-
 class Rocket extends rf.agents.EvolvingSimpleAgent {
     constructor(genes, p, target) {
-        super(genes, {score: 0, normalized: 0});
+        super(genes);
 
         this.p = p; // Reference to the p5 object.
 

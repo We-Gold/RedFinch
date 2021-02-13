@@ -55,7 +55,11 @@ class VanillaNetwork {
         return inputLayer;
     }
 
-    getOutputIndex() {
+    rawOutput() {
+        return this.outputLayer().getValues();
+    }
+
+    maxIndexOutput() {
         const outputs = this.outputLayer().getValues();
 
         let max = {value: outputs[0], index: 0};

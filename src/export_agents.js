@@ -7,7 +7,7 @@ export function networkAgent(network) {
     return new NetworkAgent(network);
 }
 
-export function evolvingNetworkAgent(networkConfig, fitness) {
+export function evolvingNetworkAgent(networkConfig, fitness={score:0, normalized:0}) {
     return new EvolvingNetworkAgent(networkConfig, fitness);
 }
 
@@ -15,7 +15,7 @@ export function simpleAgent(genes) {
     return new SimpleAgent(genes);
 }
 
-export function evolvingSimpleAgent(genes, fitness) {
+export function evolvingSimpleAgent(genes, fitness={score:0, normalized:0}) {
     return new EvolvingSimpleAgent(genes, fitness);
 }
 

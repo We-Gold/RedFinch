@@ -3,7 +3,7 @@ import { cross, mutate } from '../export_evolve.js';
 import { evolvingNetwork } from '../export_networks.js';
 
 export class EvolvingNetworkAgent extends NetworkAgent {
-    constructor(networkConfig, fitness) {
+    constructor(networkConfig, fitness={score:0, normalized:0}) {
         super(evolvingNetwork(networkConfig));
 
         /*
