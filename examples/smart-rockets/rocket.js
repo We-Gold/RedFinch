@@ -1,4 +1,6 @@
-import * as rf from '../../redfinch/index.js';
+// import * as rf from '../../dist/redfinch.js';
+
+// console.log(rf.agents);
 
 class Rocket extends rf.agents.EvolvingSimpleAgent {
     constructor(genes, p, target) {
@@ -31,7 +33,7 @@ class Rocket extends rf.agents.EvolvingSimpleAgent {
     }
 
     update(frame) {
-        if(this.distanceToTarget() < this.w/2 + 40/2) this.stop();
+        if(this.distanceToTarget() < this.w/3 + 40/2) this.stop();
         else {
             this.acceleration = this.p.createVector(0,-1).setMag(this.speed);
             this.acceleration.rotate(this.genes[frame] * 180);
@@ -56,11 +58,11 @@ class Rocket extends rf.agents.EvolvingSimpleAgent {
     }
 }
 
-export function createRocket(geneLength, p, target) {
+function createRocket(geneLength, p, target) {
     return new Rocket(geneLength, p, target);
 }
 
-export function generateRandomGenes(geneLength) {
+function generateRandomGenes(geneLength) {
     let genes = [];
 
     for(let i = 0; i < geneLength; i++) {
