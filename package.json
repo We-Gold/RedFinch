@@ -1,6 +1,6 @@
 {
   "name": "redfinch",
-  "version": "1.2.1",
+  "version": "1.2.0",
   "description": "An open and functional library for neuro-evolution and reinforcement learning!",
   "main": "dist/redfinch.min.js",
   "scripts": {
