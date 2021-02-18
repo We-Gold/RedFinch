@@ -1,4 +1,4 @@
-export class TensorflowSequentialNetwork {
+export class SequentialNetwork {
     /**
      * This network has a sequential model.
      * This class is more of a standard interface for the sequential model.

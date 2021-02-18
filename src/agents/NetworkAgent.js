@@ -1,13 +1,16 @@
 export class NetworkAgent {
     /**
-     * @param {VanillaNetwork} network 
+     * Constructs the agent with a tensorflow sequential network.
+     * The SequentialNetwork is an wrapper for tf.Sequential,
+     * in order to maintain consistency in the library.
+     * @param {SequentialNetwork} network 
      */
     constructor(network) {
         this.network = network;
     }
 
     /**
-     * @returns {VanillaNetwork}
+     * @returns {SequentialNetwork}
      */
     getNetwork() {
         return this.network;
@@ -15,7 +18,7 @@ export class NetworkAgent {
 
     /**
      * Get a prediction from the network based on some inputs.
-     * @param  {Array} inputs The inputs to the network
+     * @param  {tf.Tensor} inputs The inputs to the network
      * @return {any}      The output of the network.
      */
     predict(inputs, returnMaxIndex=false) {
@@ -26,7 +29,7 @@ export class NetworkAgent {
 
     /**
      * Feed the inputs through the network.
-     * @param  {Array} inputs The inputs to the network
+     * @param  {tf.Tensor} inputs The inputs to the network
      * @return {NetworkAgent}      Returns itself for chaining.
      */
     feedForward(inputs) {
@@ -51,5 +54,13 @@ export class NetworkAgent {
      */
     rawOutput() {
         return this.network.rawOutput();
+    }
+
+    /**
+     * Returns the network's output as a tensor.
+     * @returns {tf.Tensor}
+     */
+    tensorOutput() {
+        return this.network.tensorOutput();
     }
 }

@@ -1,8 +1,8 @@
-import { VanillaNetwork } from "../bases/VanillaNetwork.js";
+import { SequentialNetwork } from "../../export_networks.js";
 
-export class EvolvingNetwork extends VanillaNetwork {
-    constructor(config) {
-        super(config);
+export class EvolvingNetwork extends SequentialNetwork {
+    constructor(model) {
+        super(model);
     }
 
     /**
@@ -12,16 +12,8 @@ export class EvolvingNetwork extends VanillaNetwork {
     flatten() {
         let flattenedNetwork = [];
 
-        // Get all the layers except for the output layer.
-        const layers = this.layers.slice(0, this.layers.length - 1);
-
-        // Add the weights of all the nodes in the network to an array.
-        layers.forEach((layer) => {
-            layer.getNodes().forEach((node) => {
-                flattenedNetwork = [...flattenedNetwork, ...node.getWeights()];
-            });
-            
-            flattenedNetwork = [...flattenedNetwork, ...layer.getBias().getWeights()];
+        this.getWeights().forEach((weight) => {
+            flattenedNetwork.push(...weight.dataSync());
         });
 
         return flattenedNetwork;
@@ -30,24 +22,22 @@ export class EvolvingNetwork extends VanillaNetwork {
     /**
      * Sets the weights and biases in the network to those in the given flattened network.
      * @param  {Array} flattenedNetwork The flattened network
+     * @param  {tfjs} tfjs The tensorflow object to call tensorflow functions with.
      * @return {EvolvingNetwork}      Returns itself for chaining.
      */
-    setFlattened(flattenedNetwork) {
+    setFlattened(flattenedNetwork, tfjs) {
         let _flattenedNetwork = [...flattenedNetwork];
 
-        // Get all the layers except for the output layer.
-        const layers = this.layers.slice(0, this.layers.length - 1);
-
-        // Set the weights of all of the nodes to those given in the flattened network.
-        layers.forEach((layer) => {
-            layer.getNodes().forEach((node) => {
-                const newWeights = _flattenedNetwork.splice(0,node.getWeights().length);
-                node.setWeights(newWeights);
-            });
-            
-            layer.getBias().setWeights(_flattenedNetwork.splice(0,layer.getBias().getWeights().length));
+        model.getWeights().forEach((weight) => {
+            const shape = weight.shape;
+            const length = this.shapeToLength(shape);
+            weight.assign(tfjs.tensor(_flattenedNetwork.splice(0, length), shape));
         });
 
         return this;
+    }
+
+    shapeToLength(shape) {
+        return shape.reduce((prev, curr) => prev * curr, 1);
     }
 }
