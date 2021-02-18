@@ -1,3 +1,9 @@
+/**
+ * Crosses the given agents' genes and returns the result.
+ * @param {any} agent1 
+ * @param {any} agent2 
+ * @returns {Array}
+ */
 export function random(agent1, agent2) {
     if(agent1 == null) throw "Agent 1 is null";
     if(agent2 == null) throw "Agent 2 is null";

@@ -5,10 +5,13 @@ import { evolvingNetwork } from '../export_networks.js';
 export class EvolvingNetworkAgent extends NetworkAgent {
     /**
      * @param {tf.Sequential} model 
+     * @param {tf} tfjs A reference to the tf global from tensorflow.js. This argument is required.
      * @param {Object} fitness  
      */
-    constructor(model, fitness={score:0, normalized:0}) {
-        super(evolvingNetwork(model));
+    constructor(model, tfjs, fitness={score:0, normalized:0}) {
+        super(evolvingNetwork(model, tfjs));
+
+        this.tfjs = tfjs;
 
         this.fitness = fitness;
     }
@@ -58,10 +61,9 @@ export class EvolvingNetworkAgent extends NetworkAgent {
 
     /**
      * @param {Array} flattenedNetwork 
-     * @param {tf.tensor} createTensorFunction A method to create a tensor for tfjs.
      */
-    setFlattened(flattenedNetwork, createTensorFunction) {
-        this.network.setFlattened(flattenedNetwork, createTensorFunction);
+    setFlattened(flattenedNetwork) {
+        this.network.setFlattened(flattenedNetwork);
 
         return this;
     }

@@ -1,8 +1,13 @@
 import { SequentialNetwork } from "../../export_networks.js";
 
 export class EvolvingNetwork extends SequentialNetwork {
-    constructor(model) {
-        super(model);
+    /**
+     * This class extends the basic sequential network to add evolution features.
+     * @param {tf.Sequential} model A defined tensorflow sequential model. 
+     * @param {tf} tfjs A reference to the tf global from tensorflow.js. This argument is required.
+     */
+    constructor(model, tfjs) {
+        super(model, tfjs);
     }
 
     /**
@@ -22,16 +27,15 @@ export class EvolvingNetwork extends SequentialNetwork {
     /**
      * Sets the weights and biases in the network to those in the given flattened network.
      * @param  {Array} flattenedNetwork The flattened network
-     * @param  {tfjs} tfjs The tensorflow object to call tensorflow functions with.
      * @return {EvolvingNetwork}      Returns itself for chaining.
      */
-    setFlattened(flattenedNetwork, tfjs) {
+    setFlattened(flattenedNetwork) {
         let _flattenedNetwork = [...flattenedNetwork];
 
         model.getWeights().forEach((weight) => {
             const shape = weight.shape;
             const length = this.shapeToLength(shape);
-            weight.assign(tfjs.tensor(_flattenedNetwork.splice(0, length), shape));
+            weight.assign(this.tfjs.tensor(_flattenedNetwork.splice(0, length), shape));
         });
 
         return this;

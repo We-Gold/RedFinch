@@ -3,13 +3,20 @@ export class SequentialNetwork {
      * This network has a sequential model.
      * This class is more of a standard interface for the sequential model.
      * @param {tf.Sequential} model A defined tensorflow sequential model. 
+     * @param {tf} tfjs A reference to the tf global from tensorflow.js. This argument is required.
      */
-    constructor(model) {
+    constructor(model, tfjs) {
         if(model == null || model == undefined) {
             throw "Error: Provided tensorflow sequential model is invalid.";
         }
 
+        if(tfjs == null || tfjs == undefined) {
+            throw "Error: Tensorflow.js global is invalid. You must pass in `tf` from tensorflow.js.";
+        }
+
         this.model = model;
+
+        this.tfjs = tfjs;
         
         this.output = null;
     }

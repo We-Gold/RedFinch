@@ -21,10 +21,8 @@ export class NetworkAgent {
      * @param  {tf.Tensor} inputs The inputs to the network
      * @return {any}      The output of the network.
      */
-    predict(inputs, returnMaxIndex=false) {
-        this.feedForward(inputs);
-
-        return returnMaxIndex ? this.maxIndexOutput() : this.rawOutput();
+    predict(inputs) {
+        return this.network.predict(inputs);
     }
 
     /**
