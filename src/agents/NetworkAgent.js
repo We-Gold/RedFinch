@@ -1,8 +1,14 @@
 export class NetworkAgent {
+    /**
+     * @param {VanillaNetwork} network 
+     */
     constructor(network) {
         this.network = network;
     }
 
+    /**
+     * @returns {VanillaNetwork}
+     */
     getNetwork() {
         return this.network;
     }
@@ -31,10 +37,18 @@ export class NetworkAgent {
         return this;
     }
 
+    /**
+     * Returns the index of the network's output.
+     * @returns {Integer}
+     */
     maxIndexOutput() {
         return this.network.maxIndexOutput();
     }
 
+    /**
+     * Returns the network's output as an array.
+     * @returns {Array} 
+     */
     rawOutput() {
         return this.network.rawOutput();
     }

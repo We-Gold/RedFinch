@@ -3,16 +3,27 @@ import { cross, mutate } from '../export_evolve.js';
 import { evolvingNetwork } from '../export_networks.js';
 
 export class EvolvingNetworkAgent extends NetworkAgent {
+    /**
+     * @param {Object} networkConfig 
+     * @param {Object} fitness 
+     */
     constructor(networkConfig, fitness={score:0, normalized:0}) {
         super(evolvingNetwork(networkConfig));
 
         this.fitness = fitness;
     }
 
+    /**
+     * @returns {Object} The fitness object of this agent.
+     */
     getFitness() {
         return this.fitness;
     }
 
+    /**
+     * Updates this agent's fitness object.
+     * @param {Object} fitness 
+     */
     setFitness(fitness) {
         if(fitness == null || fitness == undefined) throw "Fitness is invalid" 
         this.fitness = {...this.fitness, ...fitness};
@@ -34,12 +45,21 @@ export class EvolvingNetworkAgent extends NetworkAgent {
      */
     mutate() {
         this.setFlattened(mutate.random(this));
+
+        return this;
     }
 
+    /**
+     * @returns {Array} This agent's network flattened.
+     */
     getFlattened() {
         return this.network.flatten();
     }
 
+    /**
+     * Updates the weights of the network from a 1D array.
+     * @param {Array} flattenedNetwork 
+     */
     setFlattened(flattenedNetwork) {
         this.network.setFlattened(flattenedNetwork);
 

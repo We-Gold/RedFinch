@@ -13,10 +13,18 @@ export class EvolvingTFNetworkAgent extends TFNetworkAgent {
         this.fitness = fitness;
     }
 
+    /**
+     * Returns this agent's fitness.
+     * @returns {Object} fitness
+     */
     getFitness() {
         return this.fitness;
     }
 
+    /**
+     * Updates this agent's fitness
+     * @param {Object} fitness 
+     */
     setFitness(fitness) {
         if(fitness == null || fitness == undefined) throw "Fitness is invalid" 
         this.fitness = {...this.fitness, ...fitness};
@@ -40,6 +48,10 @@ export class EvolvingTFNetworkAgent extends TFNetworkAgent {
         this.setFlattened(mutate.random(this));
     }
 
+    /**
+     * Returns the weights of this agent's network as a 1D array.
+     * @returns {Array} The flattened weights of the network.
+     */
     getFlattened() {
         return this.network.flatten();
     }

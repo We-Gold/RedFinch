@@ -2,23 +2,27 @@ import { SimpleAgent } from './SimpleAgent.js';
 import { cross, mutate } from '../export_evolve.js';
 
 export class EvolvingSimpleAgent extends SimpleAgent {
+    /**
+     * @param {Array} genes 
+     * @param {Object} fitness 
+     */
     constructor(genes, fitness={score:0, normalized:0}) {
         super(genes);
-
-        /*
-        fitness: {
-            score: 0,
-            normalized: 0
-        }
-        */
 
         this.fitness = fitness;
     }
 
+    /**
+     * @returns This agent's fitness object.
+     */
     getFitness() {
         return this.fitness;
     }
 
+    /**
+     * Updates this agent's fitness object.
+     * @param {Object} fitness 
+     */
     setFitness(fitness) {
         if(fitness == null || fitness == undefined) throw "Error: Fitness argument is invalid" 
         this.fitness = {...this.fitness, ...fitness};
@@ -42,10 +46,17 @@ export class EvolvingSimpleAgent extends SimpleAgent {
         return this.setFlattened(mutate.random(this));
     }
 
+    /**
+     * @returns {Array} The genes array 
+     */
     getFlattened() {
         return this.getGenes();
     }
 
+    /**
+     * Updates this agent's genes.
+     * @param {Array} flattened 
+     */
     setFlattened(flattened) {
         return this.setGenes(flattened);
     }

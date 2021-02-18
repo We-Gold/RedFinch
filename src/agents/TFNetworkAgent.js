@@ -9,6 +9,9 @@ export class TFNetworkAgent {
         this.network = network;
     }
 
+    /**
+     * @returns {TensorflowSequentialNetwork}
+     */
     getNetwork() {
         return this.network;
     }
@@ -37,14 +40,26 @@ export class TFNetworkAgent {
         return this;
     }
 
+    /**
+     * Returns the index of the network's output.
+     * @returns {Integer}
+     */
     maxIndexOutput() {
         return this.network.maxIndexOutput();
     }
 
+    /**
+     * Returns the network's output as an array.
+     * @returns {Array} 
+     */
     rawOutput() {
         return this.network.rawOutput();
     }
 
+    /**
+     * Returns the network's output as a tensor.
+     * @returns {tf.Tensor}
+     */
     tensorOutput() {
         return this.network.tensorOutput();
     }

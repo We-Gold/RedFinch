@@ -71,28 +71,6 @@ export class TensorflowSequentialNetwork {
     checkIfOutputIsValid() {
         if(this.output == null) throw "Error: Output of model is null. It could be that `feedForward` has not been run.";
     }
-
-    // async downloadModel(name) {
-    //     await this.saveModelToPath(`downloads://${name}`);
-    // }
-
-    // async saveModelToLocalStorage(name) {
-    //     await this.saveModelToPath(`localstorage://${name}`);
-    // }
-
-    // async saveModelToIndexedDB(name) {
-    //     await this.saveModelToPath(`indexeddb://${name}`);
-    // }
-
-    // async saveModelToPath(path) {
-    //     this.checkIfNameIsValid();
-
-    //     await this.model.save(path);
-    // }
-
-    // checkIfNameIsValid(name) {
-    //     if(name == "" || name == null || name == undefined) throw "Error: model name is invalid";
-    // }
 }
 
 
