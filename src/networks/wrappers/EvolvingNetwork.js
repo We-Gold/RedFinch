@@ -1,6 +1,6 @@
 import { VanillaNetwork } from "../bases/VanillaNetwork.js";
 
-class EvolvingNetwork extends VanillaNetwork {
+export class EvolvingNetwork extends VanillaNetwork {
     constructor(config) {
         super(config);
     }
@@ -51,5 +51,3 @@ class EvolvingNetwork extends VanillaNetwork {
         return this;
     }
 }
-
-export { EvolvingNetwork };

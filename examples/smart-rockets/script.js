@@ -1,74 +1,48 @@
-const popSize = 100;
-const geneLength = 25;
-const frameRate = 20;
+const POPULATION_SIZE = 100;
+const EPISODE_LENGTH = 120;
+const FRAME_RATE = 60;
 
-let frame = 0;
+const environment = createEnvironment(POPULATION_SIZE, EPISODE_LENGTH);
+
+let step = 0;
+let generation = 1;
 
 let target = null;
 
-let population = [];
 
-function getRandomAgentInArray(array) {
-    return array[Math.floor(Math.random() * array.length)];
+function setup() {
+    createCanvas(innerWidth, innerHeight);
+    background(200);
+    frameRate(FRAME_RATE);
+
+    environment.setTargetPosition(width/2, 60);
+
+    environment.initializePopulation();
 }
 
-let sketch = function(p) {
-    p.setup = function(){
-        p.createCanvas(800, 600);
-        p.background(200);
-        p.angleMode(p.DEGREES);
-        p.frameRate(frameRate);
+function draw() {
+    background(200);
 
-        target = p.createVector(p.width/2, 60);
+    drawInfoText();
 
-        for(let i = 0; i < popSize; i++) {
-            population.push(createRocket(generateRandomGenes(geneLength), p, target));
-        }
-    },
-    p.draw = function(){
-        p.background(200);
+    environment.show()
 
-        p.fill(0,150,0);
-        p.noStroke();
-        p.circle(target.x, target.y, 40);
+    environment.update(step);
 
-        population.forEach((rocket) => {
-            rocket.show();
-            rocket.update(frame);
-        });
+    step++;
 
-        frame++;
+    if(step >= EPISODE_LENGTH) {
+        step = 0;
 
-        if(frame >= geneLength) {
-            frame = 0;
-            // Create a new generatation
-            let selectionPool = [];
+        generation++;
 
-            population.forEach((rocket) => {
-                const timesToAddToSelectionPool = Math.round(rocket.getFitness().score * 100) / 10;
-
-                for(let i = 0; i < timesToAddToSelectionPool; i++) {
-                    selectionPool.push(rocket);
-                }
-            });
-
-            population = [];
-
-            for(let i = 0; i < popSize; i++) {
-                const parent1 = getRandomAgentInArray(selectionPool);
-                let parent2 = null;
-
-                while(parent2 == null || parent2 === parent1) {
-                    parent2 = getRandomAgentInArray(selectionPool);
-                }
-
-                const childGenes = rf.evolve.crossAgents(parent1, parent2);
-
-                const child = createRocket(childGenes, p, target).mutate();
-
-                population.push(child);
-            }
-        }
+        environment.createNewGeneration();
     }
-};
-new p5(sketch, 'container');
+}
+
+function drawInfoText() {
+    textAlign(RIGHT, TOP);
+    textSize(18);
+    fill(0);
+    text(`Generation: ${generation}`, width - 35, 15);
+}

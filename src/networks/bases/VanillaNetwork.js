@@ -1,4 +1,4 @@
-class VanillaNetwork {
+export class VanillaNetwork {
     constructor(config) {
         /* 
         config: [
@@ -187,5 +187,3 @@ class Node {
         return this;
     }
 }
-
-export { VanillaNetwork };

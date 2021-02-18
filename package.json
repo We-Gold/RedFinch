@@ -1,8 +1,8 @@
 {
   "name": "redfinch",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "An open and functional library for neuro-evolution and reinforcement learning!",
-  "main": "dist/redfinch.js",
+  "main": "dist/redfinch.min.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack"
@@ -17,9 +17,6 @@
     "url": "https://github.com/We-Gold/RedFinch/issues"
   },
   "homepage": "https://github.com/We-Gold/RedFinch#readme",
-  "dependencies": {
-    "@tensorflow/tfjs": "^3.0.0"
-  },
   "devDependencies": {
     "@babel/core": "^7.12.16",
     "@babel/preset-env": "^7.12.16",

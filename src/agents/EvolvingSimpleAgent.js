@@ -1,7 +1,7 @@
 import { SimpleAgent } from './SimpleAgent.js';
 import { cross, mutate } from '../export_evolve.js';
 
-class EvolvingSimpleAgent extends SimpleAgent {
+export class EvolvingSimpleAgent extends SimpleAgent {
     constructor(genes, fitness={score:0, normalized:0}) {
         super(genes);
 
@@ -50,5 +50,3 @@ class EvolvingSimpleAgent extends SimpleAgent {
         return this.setGenes(flattened);
     }
 }
-
-export { EvolvingSimpleAgent };

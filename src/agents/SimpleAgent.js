@@ -1,4 +1,4 @@
-class SimpleAgent {
+export class SimpleAgent {
     constructor(genes) {
         this.genes = genes;
     }
@@ -15,5 +15,3 @@ class SimpleAgent {
         return this;
     }
 }
-
-export { SimpleAgent };

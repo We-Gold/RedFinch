@@ -1,27 +1,39 @@
-import * as tf from '@tensorflow/tfjs';
-
 export class TensorflowSequentialNetwork {
     /**
      * This network has a sequential model.
      * This class is more of a standard interface for the sequential model.
-     * @param {tf.Sequential} sequentialModel 
+     * @param {tf.Sequential} model A defined tensorflow sequential model. 
      */
-    constructor(sequentialModel) {
-        if(sequentialModel == null || sequentialModel == undefined || !sequentialModel.hasOwnProperty('summary')) {
+    constructor(model) {
+        if(model == null || model == undefined) {
             throw "Error: Provided tensorflow sequential model is invalid.";
         }
 
-        this.model = sequentialModel;
-
+        this.model = model;
+        
         this.output = null;
     }
 
-    tensorflowModel() {
+    getModel() {
         return this.model;
+    }
+
+    setModel(model) {
+        if(model == null || model == undefined) {
+            throw "Error: Provided tensorflow sequential model is invalid.";
+        }
+
+        this.model = model;
+
+        return this;
     }
     
     layers() {
         return this.model.layers;
+    }
+
+    getWeights() {
+        return this.model.getWeights();
     }
 
     predict(inputs) {
@@ -60,21 +72,27 @@ export class TensorflowSequentialNetwork {
         if(this.output == null) throw "Error: Output of model is null. It could be that `feedForward` has not been run.";
     }
 
-    async downloadModel(name) {
-        this.checkIfNameIsValid();
+    // async downloadModel(name) {
+    //     await this.saveModelToPath(`downloads://${name}`);
+    // }
 
-        await model.save(`downloads://${name}`);
-    }
+    // async saveModelToLocalStorage(name) {
+    //     await this.saveModelToPath(`localstorage://${name}`);
+    // }
 
-    async saveModelToLocalStorage(name) {
-        this.checkIfNameIsValid();
+    // async saveModelToIndexedDB(name) {
+    //     await this.saveModelToPath(`indexeddb://${name}`);
+    // }
 
-        await model.save(`localstorage://${name}`);
-    }
+    // async saveModelToPath(path) {
+    //     this.checkIfNameIsValid();
 
-    checkIfNameIsValid(name) {
-        if(name == "" || name == null || name == undefined) throw "Error: model name is invalid";
-    }
+    //     await this.model.save(path);
+    // }
+
+    // checkIfNameIsValid(name) {
+    //     if(name == "" || name == null || name == undefined) throw "Error: model name is invalid";
+    // }
 }
 
 

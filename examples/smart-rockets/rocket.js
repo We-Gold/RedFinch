@@ -1,61 +1,100 @@
+const MAX_MAGNITUDE = 4
+
 class Rocket extends rf.agents.EvolvingSimpleAgent {
-    constructor(genes, p, target) {
+    constructor(genes, target) {
         super(genes);
 
-        this.p = p; // Reference to the p5 object.
+        this.W = 25; // Generic dimension of the rocket.
 
-        this.w = 20; // Generic dimension of the rocket.
+        this.MAX_MAGNITUDE = MAX_MAGNITUDE;
 
-        this.speed = 4;
+        this.REWARD_FACTOR = 10;
 
         this.target = target;
 
-        this.position = this.pickRandomLocation();
-        this.velocity = this.p.createVector(0,0);
-        this.acceleration = this.p.createVector(0,0);    
+        this.crashed = false;
+        this.completed = false;
+
+        this.position = this.startLocation();
+        this.velocity = createVector(0,0);
+        this.acceleration = createVector(0,0);    
     }
 
-    pickRandomLocation() {
-        return this.p.createVector(this.p.width/2, this.p.height - 20);
+    startLocation() {
+        return createVector(width/2, height - 20);
     }
 
     show() {
-        this.p.push();
-        this.p.translate(this.position);
-        this.p.rotate(this.velocity.heading());
-        this.p.fill(0);
-        this.p.triangle(0, this.w/2, 0, -this.w/2, this.w, 0);
-        this.p.pop();
+        push();
+        translate(this.position);
+        rotate(this.velocity.heading());
+        fill(0);
+        rectMode(CENTER);
+        rect(0, 0, this.W, this.W / 5);
+        pop();
     }
 
-    update(frame) {
-        if(this.distanceToTarget() < this.w/3 + 40/2) this.stop();
+    update(step) {
+        if(this.hasCompleted()) this.goToTarget();
+        else if(this.hasCrashed()) this.stop();
         else {
-            this.acceleration = this.p.createVector(0,-1).setMag(this.speed);
-            this.acceleration.rotate(this.genes[frame] * 180);
-            
+            this.acceleration.add(this.genes[step]);
             this.velocity.add(this.acceleration);
             this.position.add(this.velocity);
 
-            this.updateFitnessScore();
+            this.acceleration.mult(0);
+            this.velocity.limit(this.MAX_MAGNITUDE);
         }
+
+        this.updateFitnessScore();
+    }
+
+    hasCrashed() {
+        if(this.crashed == true) return true;
+
+        this.crashed = this.position.x < 0 || this.position.x > width || this.position.y < 0 || this.position.y > height;
+        return this.crashed;
+    }
+
+    hasCompleted() {
+        if(this.completed == true) return true;
+
+        this.completed = this.distanceToTarget() < this.W;
+        return this.completed;
+    }
+
+    goToTarget() {
+        this.position = this.target.copy();
     }
 
     stop() {
-        this.setFitness({score: 1});
+        return;
     }
 
     updateFitnessScore() {
-        this.setFitness({score: (1/this.distanceToTarget())});
+        let score = map(this.distanceToTarget(), 0, width, width, 0);
+
+        if(this.hasCompleted()) score *= this.REWARD_FACTOR;
+        else if(this.hasCrashed()) score /= this.REWARD_FACTOR;
+
+        this.setFitness({score});
     }
 
     distanceToTarget() {
         return this.position.dist(this.target);
     }
+
+    mutate(mutationRate, randomGeneFunction) {
+        return this.setFlattened(rf.evolve.mutate.random(this, mutationRate, randomGeneFunction));
+    }
 }
 
-function createRocket(geneLength, p, target) {
-    return new Rocket(geneLength, p, target);
+function createRocketWithGenes(genes, target) {
+    return new Rocket(genes, target);
+}
+
+function createRandomRocket(geneLength, target) {
+    return new Rocket(generateRandomGenes(geneLength), target);
 }
 
 function generateRandomGenes(geneLength) {
@@ -69,6 +108,9 @@ function generateRandomGenes(geneLength) {
 }
 
 function randomGene() {
-    // Returns a random number between -1 and 1.
-    return (Math.random() * 2) - 1;
+    // Returns a random force.
+    const force = p5.Vector.random2D();
+    force.setMag(MAX_MAGNITUDE);
+
+    return force;
 }

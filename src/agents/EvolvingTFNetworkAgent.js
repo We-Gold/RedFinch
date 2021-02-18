@@ -1,10 +1,14 @@
-import { NetworkAgent } from './NetworkAgent.js';
+import { TFNetworkAgent } from './TFNetworkAgent.js';
 import { cross, mutate } from '../export_evolve.js';
-import { evolvingNetwork } from '../export_networks.js';
+import { evolvingTFNetwork } from '../export_networks.js';
 
-export class EvolvingNetworkAgent extends NetworkAgent {
-    constructor(networkConfig, fitness={score:0, normalized:0}) {
-        super(evolvingNetwork(networkConfig));
+export class EvolvingTFNetworkAgent extends TFNetworkAgent {
+    /**
+     * @param {tf.Sequential} model 
+     * @param {Object} fitness  
+     */
+    constructor(model, fitness={score:0, normalized:0}) {
+        super(evolvingTFNetwork(model));
 
         this.fitness = fitness;
     }
@@ -40,8 +44,12 @@ export class EvolvingNetworkAgent extends NetworkAgent {
         return this.network.flatten();
     }
 
-    setFlattened(flattenedNetwork) {
-        this.network.setFlattened(flattenedNetwork);
+    /**
+     * @param {Array} flattenedNetwork 
+     * @param {tf.tensor} createTensorFunction A method to create a tensor for tfjs.
+     */
+    setFlattened(flattenedNetwork, createTensorFunction) {
+        this.network.setFlattened(flattenedNetwork, createTensorFunction);
 
         return this;
     }
